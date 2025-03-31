@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillSnap - Login</title>
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Senpai search</h1>
+    </header>
+    <div class="container">
+      <div class="b">
+        <h2>Register</h2>
+        <input type="text" id="Email" placeholder="Enter Email" />
+        <input type="text" id="Rusername" placeholder="Enter Username" />
+        <input type="password" id="Rpassword" placeholder="Enter Password" />
+        <input
+          type="password"
+          id="Repassword"
+          placeholder="Re-enter Password"
+        />
+        <button id="register" type="button">Register</button>
+        <p id="registerMessage"></p>
+        <p id="registerErrorMessage"></p>
+      </div>
+      <div class="b">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Enter Username" />
+        <input type="password" id="password" placeholder="Enter Password" />
+        <button id="login" type="button">Login</button>
+        <p id="loginErrorMessage"></p>
+      </div>
+    </div>
+
+    <script type="module" src="js/login.js"></script>
+  </body>
+</html>

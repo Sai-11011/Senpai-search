@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SenpaiSearch</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>SenpaiSearch</h1>
+      <div>
+        <input type="text" id="searchBar" placeholder="Search for anime..." />
+        <button id="searchButton">Search</button>
+      </div>
+      <button id="loginButton" onclick="window.location.href='login.html'">
+        Login
+      </button>
+      <img
+        id="userIcon"
+        src="css/user-icon.png"
+        alt="User  Icon"
+        style="display: none; width: 50px; cursor: pointer"
+      />
+    </header>
+
+    <main id="animeList"></main>
+    <div id="profilePopup" class="popup">
+      <div class="popup-content">
+        <span class="close" id="closePopup">&times;</span>
+        <h2>User Profile</h2>
+        <p><strong>Username:</strong> <span id="displayUsername"></span></p>
+        <h3>Search History</h3>
+        <ul id="searchHistoryList"></ul>
+        <button id="clearHistoryButton">Clear History</button>
+        <button id="logoutButton">Logout</button>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>
