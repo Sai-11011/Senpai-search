@@ -11,10 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const userIcon = document.getElementById('userIcon');
     const clearHistoryButton = document.getElementById('clearHistoryButton');
 
-    const loggedInUser  = JSON.parse(localStorage.getItem('loggedInUser '));
+        const loggedInUser  = JSON.parse(localStorage.getItem('loggedInUser'));
     
     if (loggedInUser ) {
-        displayUsername.textContent = loggedInUser .username;
+            displayUsername.textContent = loggedInUser.name || loggedInUser.email;
         userIcon.style.display = 'block'; 
         loginButton.style.display = 'none'; 
 
@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Search history cleared!'); 
     });
 
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('loggedInUser ');
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('loggedInUser');
         window.location.href = '/login.html';
     });
 
@@ -67,7 +67,7 @@ function displayAnime(animeArray) {
         animeCard.classList.add('anime-card');
         
         animeCard.addEventListener('click', () => {
-            const loggedInUser  = JSON.parse(localStorage.getItem('loggedInUser ')); 
+                const loggedInUser  = JSON.parse(localStorage.getItem('loggedInUser'));
             if (loggedInUser ) {
                 window.location.href = `details.html?id=${anime.mal_id}`;
             } else {
