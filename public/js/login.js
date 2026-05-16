@@ -3,33 +3,55 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase
 import { getFirestore, collection, addDoc, query, where, getDocs, setDoc, doc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyC07y14zj-vnEAgVwdrEXyFwkM6oNUT7vk",
-    authDomain: "super-saiyan-ui.firebaseapp.com",
-    projectId: "super-saiyan-ui",
-    storageBucket: "super-saiyan-ui.firebasestorage.app",
-    messagingSenderId: "547433480566",
-    appId: "1:547433480566:web:5f64938eb06b18491b7a57",
-    measurementId: "G-MYMHSFC88Z"
-};
+// Fetch Firebase config from server (config is loaded from Vercel env vars, never hardcoded)
+let firebaseConfig = {};
+let app, db, auth;
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+async function initializeFirebase() {
+    try {
+        const response = await fetch('/api/firebase-config');
+        firebaseConfig = await response.json();
+        if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+            throw new Error('Invalid Firebase config from server');
+        }
+        app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        auth = getAuth(app);
+        enableUI();
+    } catch (error) {
+        console.error('Failed to load Firebase config:', error);
+        alert('Error: Firebase configuration not available. Please try again later.');
+        disableUI();
+    }
+}
 
-// Validate that the web Firebase config is filled; if not, disable actions and notify.
-if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-    console.error('Firebase web config is missing in public/js/login.js. Fill the firebaseConfig object with your web app credentials from the Firebase console.');
+function disableUI() {
     const disableIfExists = id => { const el = document.getElementById(id); if (el) el.disabled = true; };
     disableIfExists('register');
     disableIfExists('login');
-    alert('Firebase configuration is missing. Please add your Firebase web app config to public/js/login.js to enable login/registration.');
+    disableIfExists('googleSignIn');
+    disableIfExists('forgotPassword');
 }
+
+function enableUI() {
+    const enableIfExists = id => { const el = document.getElementById(id); if (el) el.disabled = false; };
+    enableIfExists('register');
+    enableIfExists('login');
+    enableIfExists('googleSignIn');
+    enableIfExists('forgotPassword');
+}
+
+// Initialize Firebase on page load
+initializeFirebase();
 
 const Reg = document.getElementById("register");
 const log = document.getElementById("login");
 
 async function register() {
+    if (!app) {
+        alert('Firebase not initialized. Please refresh the page.');
+        return;
+    }
     const userEmail = document.getElementById("Email").value;
     const userName = document.getElementById("Rusername").value;
     const Pass = document.getElementById("Rpassword").value;
@@ -60,6 +82,10 @@ async function register() {
 }
 
 async function login() {
+    if (!app) {
+        alert('Firebase not initialized. Please refresh the page.');
+        return;
+    }
     const userEmail = document.getElementById("email").value.trim().toLowerCase();
     const Pass = document.getElementById("password").value;
 
@@ -91,6 +117,10 @@ async function login() {
 const googleBtn = document.getElementById('googleSignIn');
 if (googleBtn) {
     googleBtn.addEventListener('click', async () => {
+        if (!app) {
+            alert('Firebase not initialized. Please refresh the page.');
+            return;
+        }
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
@@ -115,6 +145,10 @@ if (googleBtn) {
 const forgotBtn = document.getElementById('forgotPassword');
 if (forgotBtn) {
     forgotBtn.addEventListener('click', async () => {
+        if (!app) {
+            alert('Firebase not initialized. Please refresh the page.');
+            return;
+        }
         const email = prompt('Enter the email address for your account:');
         if (!email) return;
         try {
